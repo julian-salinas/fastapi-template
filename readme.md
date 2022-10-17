@@ -18,12 +18,12 @@ REDIS_PASSWORD=
 
 2. Create docker containers
 ```
-docker-compose down
+docker-compose up
 ```
 
 Wait for the database to accept connections to start using the API. If this is the first time you are launching the application and the database is being created, you may need to wait for the database to finish creating and restart the application.
 
-_Note: when you want to stop it, remember to use `docker-compose up`_
+_Note: when you want to stop it, remember to use `docker-compose down`_
 
 You're done! You can explore the files I left to you. There is an example of how to create models, crud functions, dependencies (db and redis)
 database engine creating, etc.
