@@ -1,4 +1,4 @@
-# redis-full-template
+# fastapi-full-template
 
 This template counts with:
 - Full _dockerization_
