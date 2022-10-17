@@ -1,10 +1,10 @@
 # fastapi-full-template
 
-This template counts with:
+This template has:
 - Full _dockerization_
 - FastAPI application structure
 - Postgres database
-- Redis cache (I recommend to use DataGrip or RedisInsight GUI for visualizing)
+- Redis cache (I recommend using DataGrip or RedisInsight GUI for visualizing)
 - Database adminer
 - Logging configuration
 
