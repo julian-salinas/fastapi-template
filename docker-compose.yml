@@ -1,0 +1,83 @@
+networks:
+  isolation-network:
+    name: isolation-network
+    driver: bridge
+  redisnet:
+
+services:
+  api:
+    tty: true
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    container_name: api
+    restart: always
+
+    volumes:
+      - .:/opt/backend
+    
+    ports:
+      - "8000:8000"
+
+    networks:
+      - redisnet
+      - isolation-network
+
+    env_file:
+      - .env
+
+    depends_on:
+      - cache
+      - database
+    
+    command: python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+  
+  database:
+    image: postgres:13.2
+    container_name: database
+    restart: always
+
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+
+    expose:
+      - "5432"
+    
+    networks:
+      - isolation-network
+
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=database_name
+    
+  database_adminer:
+    image: adminer
+    container_name: database_adminer
+    restart: always
+
+    networks:
+      - isolation-network
+
+    ports:
+      - 8080:8080
+    depends_on: 
+      - database
+
+  cache: 
+    image: redislabs/redismod
+    container_name: cache
+    
+    networks:
+      - redisnet
+
+    ports:
+      - "6379:6379" 
+    
+    volumes:
+      - ./redis:/var/lib/redis/data
+
+    command: >
+      -- requirepass ${REDIS_PASSWORD}
